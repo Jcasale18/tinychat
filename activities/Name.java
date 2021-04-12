@@ -8,7 +8,7 @@ import java.net.Socket;
 public class Name {
     
     public static void main(String[] args) throws IOException{
-        Socket client = new Socket("129.21.109.96", 12345);
+        Socket client = new Socket("129.21.109.96", 5115);
         OutputStream output = client.getOutputStream();
         PrintWriter printer = new PrintWriter(output);
         printer.println("Joseph Casale");
