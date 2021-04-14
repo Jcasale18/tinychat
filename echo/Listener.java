@@ -20,6 +20,7 @@ public class Listener {
             pw.println("Sent from server");
             ln.close();
             pw.close();
+            server.close();
         }
     }
 }
