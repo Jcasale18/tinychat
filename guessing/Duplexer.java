@@ -19,7 +19,7 @@ public class Duplexer {
         out.close();
         in.close();
     }
-    public void send(String message) throws IOException{
+    public void send(String message){
         out.println(message);
         out.flush();
     }
