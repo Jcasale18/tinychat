@@ -36,7 +36,7 @@ public class GuessingGameServer extends Duplexer implements Runnable {
                 default:
                     response = "ERROR: Unknown Command - " + request;
             }
-            System.out.println("SEND: " + response);
+            System.out.println("SEND " + response);
             send(response);
 
         }
