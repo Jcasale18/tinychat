@@ -17,7 +17,7 @@ public class CalculatorClient {
             if(op.equals("")){
                 break;
             }
-            InetAddress target = InetAddress.getByName("tony-audi.com");
+            InetAddress target = InetAddress.getByName("localhost");
             DatagramPacket outgoing = new DatagramPacket(op.getBytes(), op.length(), target, 12400);
             client.send(outgoing);
             byte[] buffer = new byte[1024];
