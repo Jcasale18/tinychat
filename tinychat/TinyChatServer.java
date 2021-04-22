@@ -1,11 +1,9 @@
 package tinychat;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class TinyChatServer{
     public class ClientHandler extends Duplexer implements Runnable{
@@ -28,16 +26,28 @@ public class TinyChatServer{
                     if(token.equals("Name:"))
                         continue;
                     this.name += " ";
+                    System.out.println(token);
                     this.name+=token;
 
                 }
-                this.name = name.strip();
-                System.out.println(name + " connected");
             }
+            this.name = name.strip();
+            System.out.println(name + " connected");
+            for(ClientHandler client : clients){
+                if(this != client){
+                    client.send(name + " connected");
+                }
+            }
+            
 
             while(!incoming.equals("Quit")){
                 incoming = read();
                 System.out.println(name + ": " + incoming);
+                for(ClientHandler client : clients){
+                    if(this != client){
+                        client.send(name + ": " + incoming);
+                    }
+                }
             }
             send("Closing");
             try{
@@ -57,22 +67,23 @@ public class TinyChatServer{
         }
 
     }
-    
+    public ArrayList<ClientHandler> clients;
+    public TinyChatServer(){
+        this.clients = new ArrayList<>();
+    }
 
     public static void main(String[] args) throws IOException{
         ServerSocket server = new ServerSocket(12410);
-        ArrayList<Thread> clients = new ArrayList<>();
         TinyChatServer tinyserver = new TinyChatServer();
         try{
             while(true){
-
-                Thread client = new Thread(tinyserver.new ClientHandler(server.accept()));
+                ClientHandler clienthandle =tinyserver.new ClientHandler(server.accept());
+                Thread client = new Thread(clienthandle);
                 client.start();
-                clients.add(client);
+                tinyserver.clients.add(clienthandle);
             }
 
         }catch(IOException e){}
-        
+     server.close();   
     }
-
 }

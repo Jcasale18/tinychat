@@ -8,6 +8,8 @@ import java.util.Scanner;
 public class TinyChatClient {
     
     public static void main(String[] args) throws IOException{
+
+
         Scanner userinput = new Scanner(System.in);
         Socket socket = new Socket("localhost", 12410);
         Scanner serverResponse = new Scanner(socket.getInputStream());
@@ -18,6 +20,19 @@ public class TinyChatClient {
         messager.flush();
         String response = serverResponse.nextLine();
         System.out.println(response);
+
+
+        
+        Thread listener = new Thread(() ->{
+            while(true){
+                String asyncResponse = serverResponse.nextLine();
+                System.out.println(asyncResponse);
+                if(asyncResponse.equals("Closing"))
+                    break;
+            }
+        });
+        listener.start();
+
         while(true){
             if(response.equals("Closing")){
                 break;
@@ -26,8 +41,7 @@ public class TinyChatClient {
             messager.println(outgoing);
             messager.flush();
             if(outgoing.equals("Quit")){
-                response = serverResponse.nextLine();
-                System.out.println(response);
+                break;
             }
 
         }
