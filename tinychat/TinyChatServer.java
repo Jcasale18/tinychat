@@ -49,6 +49,7 @@ public class TinyChatServer{
                     }
                 }
             }
+            clients.remove(this);//remove self from list of clients before closing.
             send("Closing");
             try{
                 close();
