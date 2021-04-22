@@ -27,8 +27,9 @@ public class TinyChatClient {
             while(true){
                 String asyncResponse = serverResponse.nextLine();
                 System.out.println(asyncResponse);
-                if(asyncResponse.equals("Closing"))
+                if(asyncResponse.equals("Closing")){
                     break;
+                }
             }
         });
         listener.start();
